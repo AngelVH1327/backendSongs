@@ -1,0 +1,66 @@
+/* Aplicar a todo el documento */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 🎵 Tema Oscuro Estilo Spotify */
+body {
+  background-color: #121212 !important;
+  color: #fff !important;
+  font-family: "Arial", sans-serif !important;
+}
+
+/* Contenedor general */
+.container {
+  max-width: 800px;
+  margin: auto;
+}
+
+/* 🎶 Estilo para los títulos */
+h1,
+h2 {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* 🟢 Botones estilo Spotify */
+.btn-primary {
+  background-color: #1db954 !important;
+  border: none !important;
+}
+.btn-primary:hover {
+  background-color: #17a74a !important;
+}
+
+/* 🎵 Estilo para los labels del formulario */
+.form-label {
+  color: #1db954 !important; /* Verde estilo Spotify */
+  font-weight: bold;
+}
+
+/* 🔥 Fondo de los formularios */
+.card {
+  background-color: #181818 !important;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+}
+
+/* 🎼 Estilo de la tabla */
+.table {
+  background-color: #282828 !important;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table thead {
+  background-color: #1db954 !important;
+  color: #000 !important;
+}
+
+.table tbody tr:hover {
+  background-color: #333 !important;
+}
