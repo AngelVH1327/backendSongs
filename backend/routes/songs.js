@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Song = require('../models/Song');
-const { body, validationResult } = require('express-validator'); // ✅ Importar correctamente
+const { body, validationResult } = require('express-validator');
 
 
 router.post(
@@ -10,9 +10,9 @@ router.post(
         body('title').trim().isLength({ min: 1 }).escape(),
         body('artist').trim().isLength({ min: 1 }).escape(),
         body('album').trim().optional().escape(),
-        body('genre').trim().optional().escape(),
+        body('genre').trim().optional(),
         body('year').isNumeric().optional(),
-        body('duration').trim().optional().matches(/^\d{1,2}:\d{2}$/), // Formato mm:ss
+        body('duration').trim().optional().matches(/^\d{1,2}:\d{2}$/), 
     ],
     async (req, res) => {
         const errors = validationResult(req);
