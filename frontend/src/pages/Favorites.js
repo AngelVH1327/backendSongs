@@ -8,10 +8,6 @@ const Favorites = () => {
     
     const { getFavorites, removeFromFavorites } = useContext(AuthContext);
     
-    useEffect(() => {
-        loadFavorites();
-    }, []);
-    
     const loadFavorites = async () => {
         setLoading(true);
         const result = await getFavorites();
@@ -25,6 +21,11 @@ const Favorites = () => {
         
         setLoading(false);
     };
+    
+    useEffect(() => {
+        loadFavorites();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     
     const handleRemoveFavorite = async (id) => {
         const result = await removeFromFavorites(id);

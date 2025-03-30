@@ -10,10 +10,14 @@ const SongList = () => {
     const { addToFavorites, removeFromFavorites, getFavorites } = useContext(AuthContext);
     const [favorites, setFavorites] = useState([]);
 
-    useEffect(() => {
-        fetchSongs();
-        fetchFavorites();
-    }, []);
+    const fetchFavorites = async () => {
+        const result = await getFavorites();
+        if (result.success) {
+            // Crear un arreglo con solo los IDs para facilitar la búsqueda
+            const favoriteIds = result.data.map(song => song._id);
+            setFavorites(favoriteIds);
+        }
+    };
 
     const fetchSongs = async () => {
         try {
@@ -28,14 +32,11 @@ const SongList = () => {
         }
     };
     
-    const fetchFavorites = async () => {
-        const result = await getFavorites();
-        if (result.success) {
-            // Crear un arreglo con solo los IDs para facilitar la búsqueda
-            const favoriteIds = result.data.map(song => song._id);
-            setFavorites(favoriteIds);
-        }
-    };
+    useEffect(() => {
+        fetchSongs();
+        fetchFavorites();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleDelete = async (id) => {
         try {
