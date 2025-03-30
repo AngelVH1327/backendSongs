@@ -13,27 +13,33 @@ app.use(cors());
 
 // Conexión a MongoDB
 mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('✅ Conectado a MongoDB'))
+  .catch((err) => console.error('❌ Error al conectar a MongoDB:', err));
 
-.then(() => console.log('✅ Conectado a MongoDB'))
-.catch((err) => console.error('❌ Error al conectar a MongoDB:', err));
-
-
+// Importar rutas
 const songRoutes = require('./routes/songs');
+const authRoutes = require('./routes/auth');
+const favoriteRoutes = require('./routes/favorites');
+
+// Definir rutas
 app.use('/api/songs', songRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/favorites', favoriteRoutes);
 
 // Ruta básica de prueba
 app.get('/', (req, res) => {
   res.send('¡Bienvenido a la API de canciones! 🎵');
 });
 
+// Limitar solicitudes
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutos
   max: 100, // Máximo 100 solicitudes
   message: 'Demasiadas solicitudes desde esta IP, intenta más tarde.',
 });
 app.use(limiter);
-// Iniciar el servidor
 
+// Iniciar el servidor
 app.listen(port, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${port}`);
 });
