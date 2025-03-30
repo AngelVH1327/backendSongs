@@ -7,8 +7,9 @@ const Login = () => {
     email: '',
     password: ''
   });
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [generalError, setGeneralError] = useState('');
   
   const { login, isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -22,21 +23,69 @@ const Login = () => {
   
   const { email, password } = formData;
   
+  // Validaciones en tiempo real
+  const validateField = (name, value) => {
+    switch (name) {
+      case 'email':
+        if (!value.trim()) return 'El email es obligatorio';
+        if (!/\S+@\S+\.\S+/.test(value)) return 'Debe ingresar un email válido';
+        return '';
+        
+      case 'password':
+        if (!value) return 'La contraseña es obligatoria';
+        return '';
+        
+      default:
+        return '';
+    }
+  };
+  
   const onChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    
+    // Validar el campo al cambiar
+    const error = validateField(name, value);
+    setErrors(prev => ({
+      ...prev,
+      [name]: error
+    }));
+  };
+  
+  const validateForm = () => {
+    const newErrors = {};
+    let isValid = true;
+    
+    // Validar cada campo
+    Object.keys(formData).forEach(key => {
+      const error = validateField(key, formData[key]);
+      if (error) {
+        newErrors[key] = error;
+        isValid = false;
+      }
+    });
+    
+    setErrors(newErrors);
+    return isValid;
   };
   
   const onSubmit = async e => {
     e.preventDefault();
-    setError('');
-    setIsLoading(true);
+    setGeneralError('');
+    
+    // Validar el formulario completo
+    if (!validateForm()) {
+      return;
+    }
+    
+    setIsSubmitting(true);
     
     const result = await login(formData);
     
-    setIsLoading(false);
+    setIsSubmitting(false);
     
     if (!result.success) {
-      setError(result.error);
+      setGeneralError(result.error || 'Credenciales inválidas');
     } else {
       navigate('/home');
     }
@@ -49,9 +98,9 @@ const Login = () => {
           <h2><span className="text-success">🎵</span> Iniciar Sesión</h2>
         </div>
         <div className="card-body p-4">
-          {error && (
+          {generalError && (
             <div className="alert alert-danger" role="alert">
-              {error}
+              {generalError}
             </div>
           )}
           <form onSubmit={onSubmit}>
@@ -59,34 +108,46 @@ const Login = () => {
               <label htmlFor="email" className="form-label">Email</label>
               <input
                 type="email"
-                className="form-control bg-dark text-white"
+                className={`form-control bg-dark text-white ${errors.email ? 'is-invalid' : ''}`}
                 id="email"
                 name="email"
                 value={email}
                 onChange={onChange}
                 required
                 placeholder="Ingresa tu email"
+                autoComplete="email"
               />
+              {errors.email && (
+                <div className="invalid-feedback">
+                  {errors.email}
+                </div>
+              )}
             </div>
             <div className="mb-4">
               <label htmlFor="password" className="form-label">Contraseña</label>
               <input
                 type="password"
-                className="form-control bg-dark text-white"
+                className={`form-control bg-dark text-white ${errors.password ? 'is-invalid' : ''}`}
                 id="password"
                 name="password"
                 value={password}
                 onChange={onChange}
                 required
                 placeholder="Ingresa tu contraseña"
+                autoComplete="current-password"
               />
+              {errors.password && (
+                <div className="invalid-feedback">
+                  {errors.password}
+                </div>
+              )}
             </div>
             <button
               type="submit"
               className="btn btn-success w-100 py-2"
-              disabled={isLoading}
+              disabled={isSubmitting || Object.values(errors).some(error => error)}
             >
-              {isLoading ? (
+              {isSubmitting ? (
                 <>
                   <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                   Cargando...
