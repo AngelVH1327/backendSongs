@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 
+// Función para decodificar entidades HTML
+const decodeHTML = (html) => {
+    if (!html) return '';
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+};
+
 const Favorites = () => {
     const [favorites, setFavorites] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -84,10 +92,10 @@ const Favorites = () => {
                         <tbody>
                             {favorites.map(song => (
                                 <tr key={song._id}>
-                                    <td>{song.title}</td>
-                                    <td>{song.artist}</td>
-                                    <td>{song.album}</td>
-                                    <td>{song.genre}</td>
+                                    <td>{decodeHTML(song.title)}</td>
+                                    <td>{decodeHTML(song.artist)}</td>
+                                    <td>{decodeHTML(song.album)}</td>
+                                    <td>{decodeHTML(song.genre)}</td>
                                     <td>{song.year}</td>
                                     <td>{song.duration}</td>
                                     <td>
