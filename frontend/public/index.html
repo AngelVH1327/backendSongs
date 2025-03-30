@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#1db954" />
     <meta
       name="description"
       content="MusicApp - Tu biblioteca musical personalizada"
@@ -15,10 +15,112 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
+    <!-- Bootstrap JS (para dropdowns y otros componentes) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Meta para PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
     <title>MusicApp</title>
+    
+    <style>
+      /* Estilos de precarga */
+      .app-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #121212 0%, #0a0a0a 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+      
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        border-top-color: #1db954;
+        animation: spinner 1s linear infinite;
+      }
+      
+      @keyframes spinner {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    
+    <!-- Preloader -->
+    <div class="app-loading" id="app-loading">
+      <div class="spinner"></div>
+    </div>
+    
     <div id="root"></div>
+    
+    <script>
+      // Remover preloader cuando la página se cargue
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const preloader = document.getElementById('app-loading');
+          if (preloader) {
+            preloader.style.opacity = '0';
+            preloader.style.transition = 'opacity 0.5s ease';
+            setTimeout(function() {
+              preloader.style.display = 'none';
+            }, 500);
+          }
+        }, 500);
+      });
+      
+      // Crear partículas musicales
+      document.addEventListener('DOMContentLoaded', function() {
+        const body = document.body;
+        const PARTICLE_COUNT = 15;
+        
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          createParticle();
+        }
+        
+        function createParticle() {
+          const particle = document.createElement('div');
+          particle.classList.add('music-particle');
+          
+          // Posición aleatoria
+          const posX = Math.random() * window.innerWidth;
+          const posY = window.innerHeight + Math.random() * 100;
+          
+          // Tamaño aleatorio
+          const size = Math.random() * 15 + 5;
+          
+          // Duración aleatoria
+          const duration = Math.random() * 30 + 20;
+          
+          // Establecer estilos
+          particle.style.left = `${posX}px`;
+          particle.style.bottom = `${-posY}px`;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          particle.style.animationDuration = `${duration}s`;
+          particle.style.opacity = Math.random() * 0.6 + 0.2;
+          
+          // Añadir al body
+          body.appendChild(particle);
+          
+          // Remover después de la animación
+          setTimeout(() => {
+            particle.remove();
+            createParticle();
+          }, duration * 1000);
+        }
+      });
+    </script>
   </body>
 </html>
