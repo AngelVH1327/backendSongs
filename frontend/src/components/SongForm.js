@@ -9,12 +9,14 @@ const SongForm = ({ onSongAdded }) => {
         genre: '', 
         year: '', 
         duration: '',
+        coverImage: ''
     });
     
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState('');
     const [submitSuccess, setSubmitSuccess] = useState(false);
+    const [showForm, setShowForm] = useState(false);
     
     const validateField = (name, value) => {
         switch (name) {
@@ -50,8 +52,23 @@ const SongForm = ({ onSongAdded }) => {
                 }
                 return '';
             
+            case 'coverImage':
+                if (value && !isValidURL(value)) {
+                    return 'Debe ser una URL válida de imagen';
+                }
+                return '';
+            
             default:
                 return '';
+        }
+    };
+    
+    const isValidURL = (string) => {
+        try {
+            new URL(string);
+            return true;
+        } catch (_) {
+            return false;
         }
     };
     
@@ -109,8 +126,19 @@ const SongForm = ({ onSongAdded }) => {
             setIsSubmitting(false);
             
             // Resetear el formulario
-            setSong({ title: '', artist: '', album: '', genre: '', year: '', duration: '' });
+            setSong({ 
+                title: '', 
+                artist: '', 
+                album: '', 
+                genre: '', 
+                year: '', 
+                duration: '',
+                coverImage: ''
+            });
             setErrors({});
+            
+            // Ocultar el formulario después de añadir
+            setShowForm(false);
             
             // Notificar al componente padre
             onSongAdded();
@@ -137,152 +165,219 @@ const SongForm = ({ onSongAdded }) => {
 
     return (
         <div className="container mt-4">
-            <h2 className="text-center">Agregar Canción</h2>
-            
-            {submitError && (
-                <div className="alert alert-danger" role="alert">
-                    {submitError}
+            {!showForm ? (
+                <div className="d-flex justify-content-center mb-4">
+                    <button 
+                        className="btn btn-success btn-lg" 
+                        onClick={() => setShowForm(true)}
+                    >
+                        <i className="bi bi-plus-circle me-2"></i> Añadir Nueva Canción
+                    </button>
                 </div>
+            ) : (
+                <>
+                    <h2 className="text-center">Agregar Canción</h2>
+                    
+                    {submitError && (
+                        <div className="alert alert-danger" role="alert">
+                            {submitError}
+                        </div>
+                    )}
+                    
+                    {submitSuccess && (
+                        <div className="alert alert-success" role="alert">
+                            ¡Canción agregada con éxito!
+                        </div>
+                    )}
+                    
+                    <form className="card p-3 shadow bg-dark text-white" onSubmit={handleSubmit}>
+                        <div className="row">
+                            <div className="col-md-6 mb-3">
+                                <label htmlFor="title" className="form-label">Título *</label>
+                                <input 
+                                    type="text" 
+                                    id="title"
+                                    name="title" 
+                                    className={`form-control bg-dark text-white ${errors.title ? 'is-invalid' : ''}`} 
+                                    onChange={handleChange} 
+                                    value={song.title} 
+                                    required 
+                                />
+                                {errors.title && (
+                                    <div className="invalid-feedback">
+                                        {errors.title}
+                                    </div>
+                                )}
+                            </div>
+                            
+                            <div className="col-md-6 mb-3">
+                                <label htmlFor="artist" className="form-label">Artista *</label>
+                                <input 
+                                    type="text" 
+                                    id="artist"
+                                    name="artist" 
+                                    className={`form-control bg-dark text-white ${errors.artist ? 'is-invalid' : ''}`} 
+                                    onChange={handleChange} 
+                                    value={song.artist} 
+                                    required 
+                                />
+                                {errors.artist && (
+                                    <div className="invalid-feedback">
+                                        {errors.artist}
+                                    </div>
+                                )}
+                            </div>
+                            
+                            <div className="col-md-6 mb-3">
+                                <label htmlFor="album" className="form-label">Álbum</label>
+                                <input 
+                                    type="text" 
+                                    id="album"
+                                    name="album" 
+                                    className={`form-control bg-dark text-white ${errors.album ? 'is-invalid' : ''}`} 
+                                    onChange={handleChange} 
+                                    value={song.album} 
+                                />
+                                {errors.album && (
+                                    <div className="invalid-feedback">
+                                        {errors.album}
+                                    </div>
+                                )}
+                            </div>
+                            
+                            <div className="col-md-6 mb-3">
+                                <label htmlFor="genre" className="form-label">Género</label>
+                                <input 
+                                    type="text" 
+                                    id="genre"
+                                    name="genre" 
+                                    className={`form-control bg-dark text-white ${errors.genre ? 'is-invalid' : ''}`} 
+                                    onChange={handleChange} 
+                                    value={song.genre} 
+                                    placeholder="Ej: Rock, Pop, Jazz"
+                                />
+                                {errors.genre && (
+                                    <div className="invalid-feedback">
+                                        {errors.genre}
+                                    </div>
+                                )}
+                            </div>
+                            
+                            <div className="col-md-6 mb-3">
+                                <label htmlFor="year" className="form-label">Año</label>
+                                <input 
+                                    type="number" 
+                                    id="year"
+                                    name="year" 
+                                    className={`form-control bg-dark text-white ${errors.year ? 'is-invalid' : ''}`} 
+                                    onChange={handleChange} 
+                                    value={song.year} 
+                                    min="1800"
+                                    max={new Date().getFullYear()}
+                                    placeholder={`1800-${new Date().getFullYear()}`}
+                                />
+                                {errors.year && (
+                                    <div className="invalid-feedback">
+                                        {errors.year}
+                                    </div>
+                                )}
+                            </div>
+                            
+                            <div className="col-md-6 mb-3">
+                                <label htmlFor="duration" className="form-label">Duración</label>
+                                <input 
+                                    type="text" 
+                                    id="duration"
+                                    name="duration" 
+                                    className={`form-control bg-dark text-white ${errors.duration ? 'is-invalid' : ''}`} 
+                                    onChange={handleChange} 
+                                    value={song.duration} 
+                                    placeholder="Ej: 3:45" 
+                                />
+                                {errors.duration && (
+                                    <div className="invalid-feedback">
+                                        {errors.duration}
+                                    </div>
+                                )}
+                                <small className="form-text text-muted">
+                                    Formato: minutos:segundos (m:ss o mm:ss)
+                                </small>
+                            </div>
+                            
+                            <div className="col-md-12 mb-3">
+                                <label htmlFor="coverImage" className="form-label">URL de Portada</label>
+                                <input 
+                                    type="url" 
+                                    id="coverImage"
+                                    name="coverImage" 
+                                    className={`form-control bg-dark text-white ${errors.coverImage ? 'is-invalid' : ''}`} 
+                                    onChange={handleChange} 
+                                    value={song.coverImage} 
+                                    placeholder="https://ejemplo.com/imagen.jpg" 
+                                />
+                                {errors.coverImage && (
+                                    <div className="invalid-feedback">
+                                        {errors.coverImage}
+                                    </div>
+                                )}
+                                <small className="form-text text-muted">
+                                    URL de la imagen de portada (opcional). Si no se proporciona, se usará una imagen predeterminada.
+                                </small>
+                            </div>
+                            
+                            {song.coverImage && isValidURL(song.coverImage) && (
+                                <div className="col-md-12 mb-3 text-center">
+                                    <label className="form-label">Vista previa:</label>
+                                    <div>
+                                        <img 
+                                            src={song.coverImage} 
+                                            alt="Vista previa de portada" 
+                                            className="img-thumbnail" 
+                                            style={{ maxHeight: '200px' }}
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = `https://placehold.co/400x400/1DB954/FFFFFF?text=${encodeURIComponent(song.title.charAt(0) || 'M')}`;
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        
+                        <div className="mt-2">
+                            <small className="text-danger">* Campos obligatorios</small>
+                        </div>
+                        
+                        <div className="d-flex justify-content-between mt-3">
+                            <button 
+                                type="button" 
+                                className="btn btn-secondary"
+                                onClick={() => setShowForm(false)}
+                            >
+                                Cancelar
+                            </button>
+                            <button 
+                                type="submit" 
+                                className="btn btn-success"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? (
+                                    <>
+                                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        Procesando...
+                                    </>
+                                ) : 'Agregar Canción'}
+                            </button>
+                        </div>
+                    </form>
+                </>
             )}
             
             {submitSuccess && (
-                <div className="alert alert-success" role="alert">
+                <div className="alert alert-success mt-3" role="alert">
                     ¡Canción agregada con éxito!
                 </div>
             )}
-            
-            <form className="card p-3 shadow" onSubmit={handleSubmit}>
-                <div className="row">
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="title" className="form-label">Título *</label>
-                        <input 
-                            type="text" 
-                            id="title"
-                            name="title" 
-                            className={`form-control ${errors.title ? 'is-invalid' : ''}`} 
-                            onChange={handleChange} 
-                            value={song.title} 
-                            required 
-                        />
-                        {errors.title && (
-                            <div className="invalid-feedback">
-                                {errors.title}
-                            </div>
-                        )}
-                    </div>
-                    
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="artist" className="form-label">Artista *</label>
-                        <input 
-                            type="text" 
-                            id="artist"
-                            name="artist" 
-                            className={`form-control ${errors.artist ? 'is-invalid' : ''}`} 
-                            onChange={handleChange} 
-                            value={song.artist} 
-                            required 
-                        />
-                        {errors.artist && (
-                            <div className="invalid-feedback">
-                                {errors.artist}
-                            </div>
-                        )}
-                    </div>
-                    
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="album" className="form-label">Álbum</label>
-                        <input 
-                            type="text" 
-                            id="album"
-                            name="album" 
-                            className={`form-control ${errors.album ? 'is-invalid' : ''}`} 
-                            onChange={handleChange} 
-                            value={song.album} 
-                        />
-                        {errors.album && (
-                            <div className="invalid-feedback">
-                                {errors.album}
-                            </div>
-                        )}
-                    </div>
-                    
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="genre" className="form-label">Género</label>
-                        <input 
-                            type="text" 
-                            id="genre"
-                            name="genre" 
-                            className={`form-control ${errors.genre ? 'is-invalid' : ''}`} 
-                            onChange={handleChange} 
-                            value={song.genre} 
-                            placeholder="Ej: Rock, Pop, Jazz"
-                        />
-                        {errors.genre && (
-                            <div className="invalid-feedback">
-                                {errors.genre}
-                            </div>
-                        )}
-                    </div>
-                    
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="year" className="form-label">Año</label>
-                        <input 
-                            type="number" 
-                            id="year"
-                            name="year" 
-                            className={`form-control ${errors.year ? 'is-invalid' : ''}`} 
-                            onChange={handleChange} 
-                            value={song.year} 
-                            min="1800"
-                            max={new Date().getFullYear()}
-                            placeholder={`1800-${new Date().getFullYear()}`}
-                        />
-                        {errors.year && (
-                            <div className="invalid-feedback">
-                                {errors.year}
-                            </div>
-                        )}
-                    </div>
-                    
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="duration" className="form-label">Duración</label>
-                        <input 
-                            type="text" 
-                            id="duration"
-                            name="duration" 
-                            className={`form-control ${errors.duration ? 'is-invalid' : ''}`} 
-                            onChange={handleChange} 
-                            value={song.duration} 
-                            placeholder="Ej: 3:45" 
-                        />
-                        {errors.duration && (
-                            <div className="invalid-feedback">
-                                {errors.duration}
-                            </div>
-                        )}
-                        <small className="form-text text-muted">
-                            Formato: minutos:segundos (m:ss o mm:ss)
-                        </small>
-                    </div>
-                </div>
-                
-                <div className="mt-2">
-                    <small className="text-danger">* Campos obligatorios</small>
-                </div>
-                
-                <button 
-                    type="submit" 
-                    className="btn btn-primary mt-3"
-                    disabled={isSubmitting}
-                >
-                    {isSubmitting ? (
-                        <>
-                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                            Procesando...
-                        </>
-                    ) : 'Agregar Canción'}
-                </button>
-            </form>
         </div>
     );
 };

@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AuthContext from '../context/AuthContext';
+import SearchBar from '../components/SearchBar';
+import SongCard from '../components/SongCard';
+import SongDetails from '../components/SongDetails';
 
 // Función para decodificar entidades HTML
 const decodeHTML = (html) => {
@@ -13,6 +16,8 @@ const Favorites = () => {
     const [favorites, setFavorites] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedSong, setSelectedSong] = useState(null);
     
     const { getFavorites, removeFromFavorites } = useContext(AuthContext);
     
@@ -41,10 +46,26 @@ const Favorites = () => {
         if (result.success) {
             // Actualizar la lista de favoritos
             loadFavorites();
+            
+            // Cerrar el modal si está abierto
+            if (selectedSong && selectedSong._id === id) {
+                setSelectedSong(null);
+            }
         } else {
             setError('Error al eliminar de favoritos');
         }
     };
+    
+    // Filtrar favoritos según la búsqueda
+    const filteredFavorites = favorites.filter(song => {
+        const searchLower = searchTerm.toLowerCase();
+        return (
+            decodeHTML(song.title).toLowerCase().includes(searchLower) ||
+            decodeHTML(song.artist).toLowerCase().includes(searchLower) ||
+            decodeHTML(song.album).toLowerCase().includes(searchLower) ||
+            (song.genre && decodeHTML(song.genre).toLowerCase().includes(searchLower))
+        );
+    });
     
     if (loading) {
         return (
@@ -68,48 +89,41 @@ const Favorites = () => {
                 </div>
             )}
             
-            {favorites.length === 0 ? (
+            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            
+            {selectedSong && (
+                <SongDetails 
+                    song={selectedSong} 
+                    onClose={() => setSelectedSong(null)}
+                    isFavorite={true}
+                    onToggleFavorite={handleRemoveFavorite}
+                    onDelete={() => {}} // No permitimos eliminar, solo quitar de favoritos
+                />
+            )}
+            
+            {filteredFavorites.length === 0 ? (
                 <div className="card bg-dark text-white text-center p-5">
-                    <h3 className="mb-3">No tienes canciones favoritas</h3>
+                    <h3 className="mb-3">
+                        {searchTerm ? 'No se encontraron canciones favoritas' : 'No tienes canciones favoritas'}
+                    </h3>
                     <p className="lead">
-                        Agrega canciones a tus favoritos para verlas aquí
+                        {searchTerm 
+                            ? 'Intenta con otros términos de búsqueda'
+                            : 'Agrega canciones a tus favoritos para verlas aquí'
+                        }
                     </p>
                 </div>
             ) : (
-                <div className="table-responsive">
-                    <table className="table table-striped table-hover shadow">
-                        <thead className="table-dark">
-                            <tr>
-                                <th>Título</th>
-                                <th>Artista</th>
-                                <th>Álbum</th>
-                                <th>Género</th>
-                                <th>Año</th>
-                                <th>Duración</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {favorites.map(song => (
-                                <tr key={song._id}>
-                                    <td>{decodeHTML(song.title)}</td>
-                                    <td>{decodeHTML(song.artist)}</td>
-                                    <td>{decodeHTML(song.album)}</td>
-                                    <td>{decodeHTML(song.genre)}</td>
-                                    <td>{song.year}</td>
-                                    <td>{song.duration}</td>
-                                    <td>
-                                        <button 
-                                            className="btn btn-danger btn-sm" 
-                                            onClick={() => handleRemoveFavorite(song._id)}
-                                        >
-                                            ❌ Quitar
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    {filteredFavorites.map(song => (
+                        <div className="col" key={song._id}>
+                            <SongCard 
+                                song={song} 
+                                onClick={() => setSelectedSong(song)}
+                                isFavorite={true}
+                            />
+                        </div>
+                    ))}
                 </div>
             )}
         </div>

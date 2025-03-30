@@ -50,6 +50,10 @@ const songSchema = new mongoose.Schema({
             message: props => 'El formato de duración debe ser m:ss o mm:ss (ej: 3:45)'
         }
     },
+    coverImage: {
+        type: String,
+        default: 'default-cover.jpg'
+    },
     createdAt: { 
         type: Date, 
         default: Date.now 

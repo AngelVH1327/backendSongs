@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { getSongs, deleteSong } from '../api';
 import AuthContext from '../context/AuthContext';
+import SearchBar from './SearchBar';
+import SongCard from './SongCard';
+import SongDetails from './SongDetails';
 
 // Función para decodificar entidades HTML
 const decodeHTML = (html) => {
@@ -14,6 +17,8 @@ const SongList = () => {
     const [songs, setSongs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedSong, setSelectedSong] = useState(null);
     
     const { addToFavorites, removeFromFavorites, getFavorites } = useContext(AuthContext);
     const [favorites, setFavorites] = useState([]);
@@ -49,6 +54,9 @@ const SongList = () => {
     const handleDelete = async (id) => {
         try {
             await deleteSong(id);
+            if (selectedSong && selectedSong._id === id) {
+                setSelectedSong(null);
+            }
             fetchSongs();
         } catch (err) {
             setError('Error al eliminar la canción');
@@ -72,6 +80,17 @@ const SongList = () => {
             setError(result.error);
         }
     };
+
+    // Filtrar canciones según la búsqueda
+    const filteredSongs = songs.filter(song => {
+        const searchLower = searchTerm.toLowerCase();
+        return (
+            decodeHTML(song.title).toLowerCase().includes(searchLower) ||
+            decodeHTML(song.artist).toLowerCase().includes(searchLower) ||
+            decodeHTML(song.album).toLowerCase().includes(searchLower) ||
+            (song.genre && decodeHTML(song.genre).toLowerCase().includes(searchLower))
+        );
+    });
     
     if (loading) {
         return (
@@ -85,7 +104,7 @@ const SongList = () => {
 
     return (
         <div className="container mt-4">
-            <h2 className="text-center">Lista de Canciones</h2>
+            <h2 className="text-center mb-4">Biblioteca de Música</h2>
             
             {error && (
                 <div className="alert alert-danger" role="alert">
@@ -93,56 +112,41 @@ const SongList = () => {
                 </div>
             )}
             
-            {songs.length === 0 ? (
+            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            
+            {selectedSong && (
+                <SongDetails 
+                    song={selectedSong} 
+                    onClose={() => setSelectedSong(null)}
+                    isFavorite={favorites.includes(selectedSong._id)}
+                    onToggleFavorite={handleToggleFavorite}
+                    onDelete={handleDelete}
+                />
+            )}
+            
+            {filteredSongs.length === 0 ? (
                 <div className="card bg-dark text-white text-center p-5">
-                    <h3 className="mb-3">No hay canciones disponibles</h3>
+                    <h3 className="mb-3">
+                        {searchTerm ? 'No se encontraron canciones' : 'No hay canciones disponibles'}
+                    </h3>
                     <p className="lead">
-                        Usa el formulario para agregar tu primera canción
+                        {searchTerm 
+                            ? 'Intenta con otros términos de búsqueda'
+                            : 'Usa el formulario para agregar tu primera canción'
+                        }
                     </p>
                 </div>
             ) : (
-                <div className="table-responsive">
-                    <table className="table table-striped table-hover shadow">
-                        <thead className="table-dark">
-                            <tr>
-                                <th>Título</th>
-                                <th>Artista</th>
-                                <th>Álbum</th>
-                                <th>Género</th>
-                                <th>Año</th>
-                                <th>Duración</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {songs.map(song => (
-                                <tr key={song._id}>
-                                    <td>{decodeHTML(song.title)}</td>
-                                    <td>{decodeHTML(song.artist)}</td>
-                                    <td>{decodeHTML(song.album)}</td>
-                                    <td>{decodeHTML(song.genre)}</td>
-                                    <td>{song.year}</td>
-                                    <td>{song.duration}</td>
-                                    <td className="d-flex gap-2">
-                                        <button 
-                                            className={`btn btn-sm ${favorites.includes(song._id) ? 'btn-danger' : 'btn-outline-danger'}`} 
-                                            onClick={() => handleToggleFavorite(song._id)}
-                                            title={favorites.includes(song._id) ? "Quitar de favoritos" : "Añadir a favoritos"}
-                                        >
-                                            {favorites.includes(song._id) ? '❤️' : '🤍'}
-                                        </button>
-                                        <button 
-                                            className="btn btn-danger btn-sm" 
-                                            onClick={() => handleDelete(song._id)}
-                                            title="Eliminar canción"
-                                        >
-                                            🗑️ 
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    {filteredSongs.map(song => (
+                        <div className="col" key={song._id}>
+                            <SongCard 
+                                song={song} 
+                                onClick={() => setSelectedSong(song)}
+                                isFavorite={favorites.includes(song._id)}
+                            />
+                        </div>
+                    ))}
                 </div>
             )}
         </div>
