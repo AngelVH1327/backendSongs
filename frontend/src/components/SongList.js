@@ -4,6 +4,7 @@ import AuthContext from '../context/AuthContext';
 import SearchBar from './SearchBar';
 import SongCard from './SongCard';
 import SongDetails from './SongDetails';
+import SortSelector from './SortSelector';
 
 // Función para decodificar entidades HTML
 const decodeHTML = (html) => {
@@ -22,6 +23,7 @@ const SongList = () => {
     const [notification, setNotification] = useState(null);
     const [view, setView] = useState('grid'); // 'grid' o 'list'
     const [animateItems, setAnimateItems] = useState(false);
+    const [sortBy, setSortBy] = useState('title'); // Ordenación por defecto por título
     
     const containerRef = useRef(null);
     
@@ -110,6 +112,11 @@ const SongList = () => {
         fetchSongs();
         showNotification('Canción actualizada correctamente', 'success');
     };
+    
+    const handleSortChange = (sortOption) => {
+        setSortBy(sortOption);
+        showNotification(`Ordenado por ${sortOption === 'title' ? 'título' : sortOption === 'artist' ? 'artista' : 'álbum'}`, 'info');
+    };
 
     // Filtrar canciones según la búsqueda
     const filteredSongs = songs.filter(song => {
@@ -120,6 +127,19 @@ const SongList = () => {
             decodeHTML(song.album).toLowerCase().includes(searchLower) ||
             (song.genre && decodeHTML(song.genre).toLowerCase().includes(searchLower))
         );
+    });
+    
+    // Ordenar canciones según el criterio seleccionado
+    const sortedSongs = [...filteredSongs].sort((a, b) => {
+        // Decodificar texto para comparar correctamente
+        const valueA = sortBy === 'title' ? decodeHTML(a.title).toLowerCase() : 
+                      sortBy === 'artist' ? decodeHTML(a.artist).toLowerCase() : 
+                      decodeHTML(a.album).toLowerCase();
+        const valueB = sortBy === 'title' ? decodeHTML(b.title).toLowerCase() : 
+                      sortBy === 'artist' ? decodeHTML(b.artist).toLowerCase() : 
+                      decodeHTML(b.album).toLowerCase();
+        
+        return valueA.localeCompare(valueB);
     });
     
     if (loading) {
@@ -137,24 +157,27 @@ const SongList = () => {
 
     return (
         <div className="container mt-4" ref={containerRef}>
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2 className="mb-0 text-gradient">Biblioteca de Música</h2>
-                <div className="view-toggle">
-                    <div className="btn-group" role="group">
-                        <button 
-                            type="button" 
-                            className={`btn btn-sm ${view === 'grid' ? 'btn-success' : 'btn-dark'}`}
-                            onClick={() => setView('grid')}
-                        >
-                            <i className="bi bi-grid-3x3-gap-fill"></i>
-                        </button>
-                        <button 
-                            type="button" 
-                            className={`btn btn-sm ${view === 'list' ? 'btn-success' : 'btn-dark'}`}
-                            onClick={() => setView('list')}
-                        >
-                            <i className="bi bi-list-ul"></i>
-                        </button>
+            <div className="d-flex justify-content-between align-items-center flex-wrap mb-4">
+                <h2 className="mb-3 mb-md-0 text-gradient">Biblioteca de Música</h2>
+                <div className="d-flex gap-3 align-items-center flex-wrap">
+                    <SortSelector currentSort={sortBy} onSortChange={handleSortChange} />
+                    <div className="view-toggle ms-2">
+                        <div className="btn-group" role="group">
+                            <button 
+                                type="button" 
+                                className={`btn btn-sm ${view === 'grid' ? 'btn-success' : 'btn-dark'}`}
+                                onClick={() => setView('grid')}
+                            >
+                                <i className="bi bi-grid-3x3-gap-fill"></i>
+                            </button>
+                            <button 
+                                type="button" 
+                                className={`btn btn-sm ${view === 'list' ? 'btn-success' : 'btn-dark'}`}
+                                onClick={() => setView('list')}
+                            >
+                                <i className="bi bi-list-ul"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -190,7 +213,7 @@ const SongList = () => {
                 />
             )}
             
-            {filteredSongs.length === 0 ? (
+            {sortedSongs.length === 0 ? (
                 <div className="card bg-dark text-white text-center p-5 animate__animated animate__fadeIn">
                     <div className="empty-state">
                         <i className="bi bi-music-note-list empty-icon mb-3"></i>
@@ -207,7 +230,7 @@ const SongList = () => {
                 </div>
             ) : view === 'grid' ? (
                 <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                    {filteredSongs.map((song, index) => (
+                    {sortedSongs.map((song, index) => (
                         <div 
                             className={`col animate__animated ${animateItems ? 'animate__fadeInUp' : ''}`} 
                             key={song._id}
@@ -239,7 +262,7 @@ const SongList = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredSongs.map((song, index) => (
+                            {sortedSongs.map((song, index) => (
                                 <tr 
                                     key={song._id}
                                     className={`animate__animated ${animateItems ? 'animate__fadeIn' : ''}`}
@@ -278,7 +301,7 @@ const SongList = () => {
                                     <td className="align-middle">{decodeHTML(song.title)}</td>
                                     <td className="align-middle">{decodeHTML(song.artist)}</td>
                                     <td className="align-middle">{decodeHTML(song.album) || '-'}</td>
-                                    <td className="align-middle">{song.duration || '--:--'}</td>
+                                    <td className="align-middle year-duration-text">{song.duration || '--:--'}</td>
                                     <td className="align-middle">
                                         <button 
                                             className={`btn btn-sm ${favorites.includes(song._id) ? 'btn-danger' : 'btn-outline-danger'} me-1`}

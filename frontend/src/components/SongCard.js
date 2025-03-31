@@ -57,16 +57,16 @@ const SongCard = ({ song, onClick, isFavorite }) => {
                 )}
             </div>
             <div className="card-body">
-                <h5 className="card-title text-truncate fw-bold mb-1" title={decodeHTML(song.title)}>
+                <h5 className="card-title text-truncate fw-bold mb-1" title={decodeHTML(song.title)} style={{ color: '#ffffff' }}>
                     {decodeHTML(song.title)}
                 </h5>
-                <p className="card-text text-truncate text-success mb-0" title={decodeHTML(song.artist)}>
+                <p className="card-text text-truncate text-success mb-0 fw-medium" title={decodeHTML(song.artist)}>
                     {decodeHTML(song.artist)}
                 </p>
             </div>
-            <div className="card-footer d-flex justify-content-between align-items-center bg-dark border-secondary">
-                <small className="text-muted">{song.year || '---'}</small>
-                <small className="text-muted">{song.duration || '--:--'}</small>
+            <div className="card-footer d-flex justify-content-between align-items-center bg-dark border-0">
+                <small className="text-light fw-medium">{song.year || '---'}</small>
+                <small className="text-light fw-medium">{song.duration || '--:--'}</small>
             </div>
         </div>
     );

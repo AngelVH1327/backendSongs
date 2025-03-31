@@ -169,10 +169,15 @@ h2 {
   font-weight: 600;
 }
 
+
 .table td {
   vertical-align: middle;
   padding: 12px 15px !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  color: #ffffff !important; /* Color de texto más brillante */
+  font-weight: 500; /* Texto ligeramente más grueso */
+  letter-spacing: 0.3px; /* Espaciado de letras mejorado */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); /* Sombra para mejorar contraste */
 }
 
 .table tbody tr {
@@ -180,11 +185,27 @@ h2 {
 }
 
 .table tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.05) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important; /* Mayor contraste en hover */
 }
 
 .table tbody tr:last-child td {
   border-bottom: none !important;
+}
+
+/* Estilos para columnas específicas */
+.table td:nth-child(3) { /* Título */
+  font-weight: 600;
+  color: #ffffff !important;
+}
+
+.table td:nth-child(4) { /* Artista */
+  color: #1db954 !important; /* Verde Spotify para artistas */
+  font-weight: 500;
+}
+
+.table td:nth-child(6) { /* Duración */
+  font-family: 'Consolas', monospace; /* Fuente monoespaciada para tiempos */
+  color: #ffffff !important;
 }
 
 /* 🎵 Estilos para tarjetas de canciones */
@@ -239,17 +260,33 @@ h2 {
   margin-bottom: 5px;
   letter-spacing: -0.5px;
   transition: color 0.3s;
+  color: #ffffff !important; /* Color más brillante para los títulos */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* Sombra para mejorar legibilidad */
 }
 
 .song-card:hover .card-title {
-  color: #1db954;
+  color: #1db954 !important;
+}
+
+.song-card .card-text {
+  color: #1db954 !important; /* Color verde Spotify para los artistas */
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .song-card .card-footer {
-  background-color: rgba(0, 0, 0, 0.2) !important;
+  background-color: rgba(0, 0, 0, 0.6) !important; /* Fondo más oscuro para el footer */
   border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
   padding: 0.75rem 1.25rem;
 }
+
+.song-card .card-footer small {
+  color: #ffffff !important; /* Color más brillante para metadatos */
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
 
 /* 🎵 Animaciones para modal de detalles */
 .modal-backdrop {
@@ -727,4 +764,48 @@ footer {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #17a74a;
+}
+
+/* 🎵 Estilos para el selector de ordenación */
+.sort-container {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 6px 12px;
+  transition: all 0.3s ease;
+}
+
+.sort-container:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.sort-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.sort-buttons .btn {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+}
+
+.sort-buttons .btn-success {
+  background-color: #1db954 !important;
+  box-shadow: 0 2px 8px rgba(29, 185, 84, 0.3);
+}
+
+.sort-buttons .btn:hover {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 576px) {
+  .sort-container {
+    margin-bottom: 10px;
+    width: 100%;
+    justify-content: center;
+  }
 }
