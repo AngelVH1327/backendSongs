@@ -809,3 +809,107 @@ footer {
     justify-content: center;
   }
 }
+
+/* 🎵 Estilos mejorados para formularios y placeholders */
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important; /* Placeholder más brillante */
+  opacity: 1; /* Asegurar que sea visible */
+  font-weight: 400;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Mejorar inputs */
+.form-control {
+  background-color: rgba(30, 30, 30, 0.6) !important; /* Fondo más claro que el de la app */
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+}
+
+.form-control:focus {
+  background-color: rgba(40, 40, 40, 0.8) !important;
+  border-color: #1db954 !important;
+  box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.25), inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Específicamente para formularios de login y registro */
+.auth-form .form-control {
+  border-radius: 8px !important;
+  padding: 12px 15px !important;
+  font-size: 1rem !important;
+  height: auto !important;
+}
+
+.auth-form .form-label {
+  color: #1db954 !important;
+  margin-bottom: 8px !important;
+  font-weight: 600 !important;
+}
+
+/* Barra de búsqueda con mejor contraste */
+.search-container .form-control {
+  background-color: rgba(40, 40, 40, 0.8) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+}
+
+.search-container .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-weight: 500;
+}
+
+.search-container .input-group-text {
+  background-color: rgba(40, 40, 40, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-right: none !important;
+  color: #1db954 !important;
+}
+
+/* Mejora para la vista de lista */
+.table {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+.table td, .table th {
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+  vertical-align: middle !important;
+}
+
+.table thead th {
+  background: linear-gradient(to right, #1db954, #17a74a) !important;
+  color: #000 !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  font-size: 0.9rem !important;
+  border: none !important;
+  padding: 15px !important;
+}
+
+.table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: rgba(30, 30, 30, 0.8) !important;
+  padding: 15px !important;
+}
+
+.table tbody tr:hover td {
+  background-color: rgba(40, 40, 40, 0.9) !important;
+}
+
+/* Mejorar específicamente la legibilidad de los títulos y artistas */
+.table td:nth-child(3) { /* Título */
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7) !important;
+}
+
+.table td:nth-child(4) { /* Artista */
+  color: #1db954 !important;
+  font-weight: 600 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7) !important;
+}
