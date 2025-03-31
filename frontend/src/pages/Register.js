@@ -177,7 +177,7 @@ const Register = () => {
     <div className="container" style={{ maxWidth: '500px', marginTop: '60px' }}>
       <div className="card bg-dark text-white shadow-lg">
         <div className="card-header text-center p-4">
-          <h2><span className="text-success">🎵</span> Crear Cuenta</h2>
+          <h2><span className="text-success"><i className="bi bi-music-note"></i></span> Crear Cuenta</h2>
         </div>
         <div className="card-body p-4">
           {generalError && (

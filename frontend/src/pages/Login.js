@@ -95,7 +95,7 @@ const Login = () => {
     <div className="container" style={{ maxWidth: '500px', marginTop: '80px' }}>
       <div className="card bg-dark text-white shadow-lg">
         <div className="card-header text-center p-4">
-          <h2><span className="text-success">🎵</span> Iniciar Sesión</h2>
+          <h2><span className="text-success"><i className="bi bi-music-note"></i></span> Iniciar Sesión</h2>
         </div>
         <div className="card-body p-4">
           {generalError && (
