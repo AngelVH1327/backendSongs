@@ -51,7 +51,8 @@ const Navbar = () => {
       <li className="nav-item dropdown">
         <button 
           className="nav-link dropdown-toggle" 
-          id="navbarDropdown"
+          id="navbarDropdown" 
+          role="button" 
           data-bs-toggle="dropdown" 
           aria-expanded="false"
         >
@@ -90,7 +91,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className={`navbar navbar-expand-lg ${scrolled ? 'navbar-scrolled' : ''}`}>
+    <nav className={`navbar navbar-expand-lg navbar-dark ${scrolled ? 'navbar-scrolled' : ''}`}>
       <div className="container">
         <Link className="navbar-brand" to={isAuthenticated ? '/home' : '/'}>
           <div className="brand-logo">

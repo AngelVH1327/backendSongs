@@ -1,160 +1,178 @@
 /* Navbar.css */
 .navbar {
-    background: rgba(18, 18, 18, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 0.75rem 0;
-    transition: all 0.3s ease;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-  
-  .navbar-scrolled {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    background: rgba(10, 10, 10, 0.98);
-  }
-  
-  .navbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    color: white;
-    transition: color 0.3s ease;
-  }
-  
-  .navbar-brand:hover {
-    color: #1DB954;
-  }
-  
-  .brand-logo {
-    color: #1DB954;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .brand-text {
-    font-size: 1.4rem;
-    letter-spacing: -0.5px;
-  }
-  
-  .navbar-toggler {
-    border: none;
-    color: white;
-    padding: 0.5rem;
-    font-size: 1.5rem;
-  }
-  
-  .navbar-toggler:focus {
-    box-shadow: none;
-    outline: none;
-  }
-  
-  .navbar-nav {
-    align-items: center;
-    gap: 0.5rem;
+  background: rgba(18, 18, 18, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 0.75rem 0;
+  transition: all 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Asegurando que todos los elementos del navbar tienen color claro */
+.navbar .navbar-nav .nav-link,
+.navbar .navbar-toggler,
+.navbar .dropdown-toggle,
+.navbar i.bi {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.navbar-scrolled {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  background: rgba(10, 10, 10, 0.98);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  color: white !important;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+  color: #1DB954 !important;
+}
+
+.brand-logo {
+  color: #1DB954 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-text {
+  font-size: 1.4rem;
+  letter-spacing: -0.5px;
+}
+
+.navbar-toggler {
+  border: none;
+  color: white;
+  padding: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.navbar-nav {
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.75) !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: white !important;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-link.active {
+  color: #1DB954 !important;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+}
+
+.nav-link.btn-signup {
+  background-color: #1DB954;
+  color: white !important;
+  padding: 0.5rem 1.25rem;
+  border-radius: 50px;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(29, 185, 84, 0.5);
+}
+
+.nav-link.btn-signup:hover {
+  background-color: #1ed760;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(29, 185, 84, 0.6);
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+  background-color: #191919;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+  min-width: 10rem;
+  margin-top: 0.75rem;
+}
+
+.dropdown-item {
+  color: rgba(255, 255, 255, 0.8) !important;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: white !important;
+}
+
+.dropdown-item:active {
+  background-color: #1DB954;
+  color: white !important;
+}
+
+/* Asegurarse que los iconos dentro de dropdown también sean visibles */
+.dropdown-item i.bi {
+  color: inherit !important;
+}
+
+/* Navbar toggler icon color fix */
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .navbar-collapse {
+    background-color: #151515;
+    margin: 0 -1rem;
+    padding: 1rem;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
   
   .nav-item {
-    position: relative;
-  }
-  
-  .nav-link {
-    color: rgba(255, 255, 255, 0.75);
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .nav-link:hover, .nav-link.active {
-    color: white;
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-  
-  .nav-link.active {
-    color: #1DB954;
-  }
-  
-  .nav-icon {
-    font-size: 1.2rem;
+    margin: 0.5rem 0;
   }
   
   .nav-link.btn-signup {
-    background-color: #1DB954;
-    color: black;
-    padding: 0.5rem 1.25rem;
-    border-radius: 50px;
-    font-weight: 600;
-    margin-left: 0.5rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 10px rgba(29, 185, 84, 0.5);
+    margin: 0.5rem 0;
+    display: inline-block;
+    text-align: center;
   }
   
-  .nav-link.btn-signup:hover {
-    background-color: #1ed760;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(29, 185, 84, 0.6);
+  .navbar-nav {
+    align-items: flex-start;
   }
-  
-  /* Dropdown menu styling */
-  .dropdown-menu {
-    background-color: #191919;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    padding: 0.5rem;
-    min-width: 10rem;
-    margin-top: 0.75rem;
-  }
-  
-  .dropdown-item {
-    color: rgba(255, 255, 255, 0.8);
-    padding: 0.6rem 1rem;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-  }
-  
-  .dropdown-item:hover, .dropdown-item:focus {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: white;
-  }
-  
-  .dropdown-item:active {
-    background-color: #1DB954;
-    color: black;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 992px) {
-    .navbar-collapse {
-      background-color: #151515;
-      margin: 0 -1rem;
-      padding: 1rem;
-      border-radius: 0 0 12px 12px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-    
-    .nav-item {
-      margin: 0.5rem 0;
-    }
-    
-    .nav-link.btn-signup {
-      margin: 0.5rem 0;
-      display: inline-block;
-      text-align: center;
-    }
-    
-    .navbar-nav {
-      align-items: flex-start;
-    }
-  }
+}
