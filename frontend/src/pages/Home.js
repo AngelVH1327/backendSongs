@@ -15,7 +15,7 @@ const Home = () => {
             <div className="row mb-4">
                 <div className="col-12">
                     <h1 className="text-center text-white mb-0">
-                        <span className="text-success">🎵</span> MusicApp
+                        <span className="text-success"><i className="bi bi-music-note"></i></span> MusicApp
                     </h1>
                     <p className="text-center text-secondary">Tu biblioteca musical personalizada</p>
                 </div>

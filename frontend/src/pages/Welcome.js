@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import '../styles/Welcome.css'; // Importamos un nuevo archivo CSS específico
 
 const Welcome = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -14,56 +15,80 @@ const Welcome = () => {
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="container-fluid welcome-container" style={{
-      minHeight: 'calc(100vh - 56px)',
-      background: 'linear-gradient(135deg, #121212 0%, #1a1a1a 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6">
-            <div className="welcome-text p-4">
-              <h1 className="display-4 text-white mb-4">
-                Bienvenido a <span className="text-success">MusicApp</span>
-              </h1>
-              <p className="lead text-light mb-4">
-                Tu plataforma para descubrir, organizar y disfrutar de tu música favorita.
-                Crea tu cuenta y empieza a coleccionar tus canciones preferidas.
-              </p>
-              <div className="d-flex gap-3">
-                <Link to="/register" className="btn btn-success btn-lg">
-                  Registrarse
-                </Link>
-                <Link to="/login" className="btn btn-outline-light btn-lg">
-                  Iniciar Sesión
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6 d-flex justify-content-center align-items-center">
-            <div className="welcome-image p-4 text-center">
-              <div className="music-icon" style={{
-                fontSize: '150px',
-                color: '#1db954',
-                textShadow: '0 0 10px rgba(29, 185, 84, 0.5)'
-              }}>
-                🎵
-              </div>
-              <div className="mt-4 text-white">
-                <h3>Características:</h3>
-                <ul className="list-unstyled text-start">
-                  <li className="mb-2">✅ Guarda tus canciones favoritas</li>
-                  <li className="mb-2">✅ Organiza tu colección personal</li>
-                  <li className="mb-2">✅ Descubre nueva música</li>
-                  <li className="mb-2">✅ Interfaz inspirada en Spotify</li>
-                </ul>
-              </div>
-            </div>
+    <div className="welcome-container">
+      {/* Hero section con gradiente y mensaje principal */}
+      <section className="hero-section">
+        <div className="hero-content">
+          <h1 className="hero-title">Música sin límites</h1>
+          <p className="hero-subtitle">
+            Tu biblioteca musical personalizada, donde y cuando quieras
+          </p>
+          <div className="hero-buttons">
+            <Link to="/register" className="btn-primary">
+              Comenzar ahora
+            </Link>
+            <Link to="/login" className="btn-secondary">
+              Iniciar Sesión
+            </Link>
           </div>
         </div>
-      </div>
+        <div className="hero-visual">
+          <div className="album-grid">
+            <div className="album-cover" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXVzaWN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60')" }}></div>
+            <div className="album-cover" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bXVzaWN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60')" }}></div>
+            <div className="album-cover" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8bXVzaWN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60')" }}></div>
+            <div className="album-cover" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bXVzaWN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60')" }}></div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sección de características */}
+      <section className="features-section">
+        <h2 className="section-title">Descubre MusicApp</h2>
+        
+        <div className="features-grid">
+          <div className="feature-card">
+            <div className="feature-icon">
+              <i className="bi bi-music-note-list"></i>
+            </div>
+            <h3>Organiza tu colección</h3>
+            <p>Guarda todas tus canciones favoritas en un solo lugar, organizadas como tú prefieras.</p>
+          </div>
+          
+          <div className="feature-card">
+            <div className="feature-icon">
+              <i className="bi bi-heart-fill"></i>
+            </div>
+            <h3>Crea tus favoritos</h3>
+            <p>Marca las canciones que más te gustan y accede rápidamente a tu música preferida.</p>
+          </div>
+          
+          <div className="feature-card">
+            <div className="feature-icon">
+              <i className="bi bi-search"></i>
+            </div>
+            <h3>Busca sin esfuerzo</h3>
+            <p>Encuentra cualquier canción, artista o álbum con nuestro potente buscador integrado.</p>
+          </div>
+          
+          <div className="feature-card">
+            <div className="feature-icon">
+              <i className="bi bi-device-ssd"></i>
+            </div>
+            <h3>Accede desde cualquier lugar</h3>
+            <p>Tu biblioteca te sigue allá donde vayas, desde cualquier dispositivo.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to action final */}
+      <section className="cta-section">
+        <div className="cta-content">
+          <h2>¿Listo para comenzar?</h2>
+          <p>Únete a miles de amantes de la música que ya organizan su colección con MusicApp</p>
+          <Link to="/register" className="btn-primary">Crear cuenta gratis</Link>
+        </div>
+      </section>
     </div>
   );
 };
