@@ -51,8 +51,7 @@ const Navbar = () => {
       <li className="nav-item dropdown">
         <button 
           className="nav-link dropdown-toggle" 
-          id="navbarDropdown" 
-          role="button" 
+          id="navbarDropdown"
           data-bs-toggle="dropdown" 
           aria-expanded="false"
         >
